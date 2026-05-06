@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Engineer Interview Prep</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script>
+    // Apply theme before paint
+    const t = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  </script>
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────────────── -->
+<header>
+  <div class="logo">AI Prep <span>/ Interview</span></div>
+  <div class="spacer"></div>
+  <span class="progress-label">progress</span>
+  <div class="progress-pills" id="progress-pills" title="Lessons completed"></div>
+  <button id="theme-btn" onclick="toggleTheme()" title="Toggle theme">☽</button>
+</header>
+
+<!-- ── App body ───────────────────────────────────────────────── -->
+<div class="app-body">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Lesson header -->
+    <div class="lesson-header">
+      <div id="breadcrumb"></div>
+      <div class="lesson-title-row">
+        <span id="lesson-tag"></span>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="learn" onclick="switchTab('learn')">Learn</button>
+      <button class="tab-btn" data-tab="quiz" onclick="switchTab('quiz')">Quiz</button>
+      <button class="tab-btn" data-tab="code" onclick="switchTab('code')">Code</button>
+    </div>
+
+    <!-- Content area -->
+    <div class="content-area">
+
+      <!-- Learn panel -->
+      <div class="tab-panel active" id="panel-learn"></div>
+
+      <!-- Quiz panel -->
+      <div class="tab-panel" id="panel-quiz"></div>
+
+      <!-- Code panel -->
+      <div class="tab-panel" id="panel-code">
+        <div class="editor-toolbar">
+          <span>python 3</span>
+          <button class="toolbar-btn" id="reset-btn">↺ Reset</button>
+          <button class="toolbar-btn" id="copy-btn">Copy</button>
+          <button class="toolbar-btn" id="run-btn">▶ Run</button>
+        </div>
+        <div class="editor-split">
+          <div id="monaco-container"></div>
+          <div class="output-area">
+            <div class="output-label">output</div>
+            <pre class="output-box" id="output"></pre>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="bottom-nav">
+      <button class="nav-btn" id="btn-prev">← Prev</button>
+      <button class="nav-btn" id="btn-next">Next →</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Complete banner -->
+<div id="complete-banner">Lesson marked complete ✓</div>
+
+<!-- Monaco loader -->
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+
+<!-- App scripts -->
+<script src="/static/js/data.js"></script>
+<script src="/static/js/app.js"></script>
+
+<script>
+// Progress pills
+function updateProgressPills() {
+  const total = CURRICULUM.pillars.reduce((s, p) => s + p.lessons.length, 0);
+  const done = JSON.parse(localStorage.getItem('completed') || '[]').length;
+  const pills = document.getElementById('progress-pills');
+  pills.innerHTML = '';
+  for (let i = 0; i < Math.min(total, 20); i++) {
+    const d = document.createElement('div');
+    d.className = 'prog-pill' + (i < done ? ' done' : '');
+    pills.appendChild(d);
+  }
+}
+updateProgressPills();
+
+// Update pills on mark complete
+const origMark = window.markComplete;
+</script>
+
+</body>
+</html>
